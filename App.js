@@ -99,7 +99,6 @@ function AppControl() {
 
   return (
     <NavigationContainer>
-      {/* <AuthenticationStack/> */}
       {authContext.isAuth && <AuthenticatedStack/>}
       {!authContext.isAuth && <AuthenticationStack/>}
     </NavigationContainer>
@@ -109,7 +108,7 @@ function AppControl() {
 export default function App() {
   return (
     <AuthContextProvider>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <AppControl />
     </AuthContextProvider>
   );
