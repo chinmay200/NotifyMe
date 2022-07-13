@@ -44,6 +44,10 @@ function LaunchScreen() {
         drawerActiveTintColor: colors.black,
         drawerActiveBackgroundColor: colors.yellow,
         drawerInactiveTintColor: colors.white,
+        headerTintColor:colors.white,
+        headerStyle:{
+          backgroundColor:colors.black
+        },
       }}
     >
       <Drawer.Screen
@@ -53,6 +57,8 @@ function LaunchScreen() {
           drawerIcon: ({ color }) => {
             return <Ionicons name="home" size={24} color={color} />;
           },
+
+          headerShown:false
         }}
       />
       <Drawer.Screen

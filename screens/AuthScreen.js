@@ -1,19 +1,26 @@
-import { StyleSheet, ImageBackground, TextInput, View, Alert } from "react-native";
-import { useState } from "react";
+import { StyleSheet, ImageBackground, TextInput, Animated } from "react-native";
+import { useContext, useEffect, useRef, useState } from "react";
 import { colors } from "../constant/colors";
 import { Dimensions } from "react-native";
 import IconButton from "../components/IconButton";
 import Heading from "../components/Heading";
+import { AuthContext } from "../constant/appcontext";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default function AuthScreen() {
-  const [text, onChangeText] = useState("");
+  const [username, setUsername] = useState("");
+  const authCntxt = useContext(AuthContext)
 
-  function onLoginSubmit(){
-    Alert.alert("Pressed" , "Button pressed")
+  function validateUserName(enteredValue){
+    setUsername(enteredValue)
   }
+
+  function onLogin(username){
+    authCntxt.setAuthUsername(username)
+  }
+
   return (
     <ImageBackground
       source={require("../assets/banner.png")}
@@ -23,16 +30,18 @@ export default function AuthScreen() {
       <Heading>Username</Heading>
       <TextInput
         style={styles.inputField}
-        onChangeText={onChangeText}
-        value={text}
+        onChangeText={validateUserName}
+        value={username}
+        autoCapitalize="none"
       />
-      <IconButton
-        name="right"
-        size={30}
-        color={colors.black}
-        pepperStyle={styles.loginButton}
-        onPress = {onLoginSubmit}
-      />
+        <IconButton
+          name="right"
+          size={30}
+          color={colors.black}
+          pepperStyle={styles.loginButton}
+          animationProp={true}
+          onPress={()=>{onLogin(username)}}
+        />
     </ImageBackground>
   );
 }
@@ -55,13 +64,14 @@ const styles = StyleSheet.create({
     width: windowWidth - 80,
     height: windowHeight - windowHeight * 0.92,
     backgroundColor: colors.black,
-    paddingLeft: 16,
-    fontSize: 22,
-    marginVertical: 40,
+    paddingLeft: 20,
+    fontSize: 35,
+    marginVertical: 26,
+    color: colors.white,
   },
 
   loginButton: {
     position: "relative",
-    left:windowWidth - 150
+    left: windowWidth - 150,
   },
 });

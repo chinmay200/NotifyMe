@@ -7,6 +7,7 @@ export const AuthContext = createContext({
   setAuthUsername: () => {},
   isAuth: false,
   username: "",
+  logOutUser:()=>{}
 });
 
 function AuthContextProvider({ children }) {
@@ -30,15 +31,23 @@ function AuthContextProvider({ children }) {
     try {
       AsyncStorage.setItem("username", username);
       setIsAuth(true);
+      setUsername(username)
     } catch (error) {
         Alert.alert("Some problem occured")
     }
+  }
+
+  function logOutUser(){
+    AsyncStorage.removeItem('username');
+    setIsAuth(false);
+    setUsername('')
   }
 
   const value = {
     username: username,
     isAuth: isAuth,
     setAuthUsername: setAuthUsername,
+    logOutUser:logOutUser
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

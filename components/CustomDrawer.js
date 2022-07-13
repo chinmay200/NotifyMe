@@ -8,12 +8,17 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import devimage from '../assets/dev.png'
+import { AuthContext } from "../constant/appcontext";
+import { useContext } from "react";
 
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
 export default function CustomDrawer(props) {
   const navigation = useNavigation();
+
+  const authCntxt = useContext(AuthContext)
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -24,7 +29,7 @@ export default function CustomDrawer(props) {
           source={require("../assets/user.png")}
           style={styles.userImage}
         />
-        <Text style={styles.username}>John Doe</Text>
+        <Text style={styles.username}>{authCntxt.username}</Text>
       </LinearGradient>
 
       <DrawerContentScrollView {...props} style={styles.navitemsContainer}>
