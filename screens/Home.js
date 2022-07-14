@@ -25,13 +25,13 @@ export default function Home() {
   const authCntxt = useContext(AuthContext);
 
   function onLogoutPress() {
-    Alert.alert("Logout");
+    authCntxt.logOutUser()
   }
   function onTasksPressed() {
-    Alert.alert("Tasks");
+    navigation.navigate("Tasks")
   }
   function onNotesPressed() {
-    Alert.alert("Notes");
+    navigation.navigate("Notes")
   }
 
   return (
@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
   },
 
   userdetails: {
-    // backgroundColor: "red",
     width: windowWidth,
     paddingHorizontal: 25,
     marginVertical: 10,

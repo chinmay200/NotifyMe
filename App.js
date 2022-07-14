@@ -48,6 +48,7 @@ function LaunchScreen() {
         headerStyle:{
           backgroundColor:colors.black
         },
+        headerTransparent:true
       }}
     >
       <Drawer.Screen

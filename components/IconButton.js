@@ -22,10 +22,11 @@ export default function IconButton({
   }
 
   return (
+
     <Pressable
       style={[styles.buttonContainer, pepperStyle]}
       onPress={IconButtonPressed}
-      android_ripple={{ color: colors.black }}
+      
     >
 
         <AntDesign name={name} size={size} color={color} />
