@@ -57,10 +57,30 @@ function AuthContextProvider({ children }) {
       date:note.date
     };
     setNotes((prevNotes) => [newNote , ...prevNotes])
-    // console.log(newNote);
   }
   function deleteNotes() {}
-  function updateNotes() {}
+  function updateNotes(id , {title , description , date}) {
+    let updateIndex = -1;
+
+    for(let i = 0; i < notes.length; i++){
+      const note = notes[i];
+      if(id === note.id){
+        updateIndex = i;
+        break;
+      }
+    }
+
+    const updatedNote = {
+      id:id,
+      title:title,
+      description:description,
+      date:date
+    }
+
+    const updatedNotesList = [...notes];
+    updatedNotesList[updateIndex] = updatedNote
+    setNotes([...updatedNotesList])
+  }
 
   const value = {
     username: username,

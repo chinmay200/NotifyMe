@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { Pressable, StyleSheet, Text, View, Dimensions } from "react-native";
 import { colors } from "../constant/colors";
 import Title from "./Title";
@@ -5,10 +6,17 @@ import Title from "./Title";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-export default function NoteCard({ title, description, date , onPress}) {
+export default function NoteCard({ title, description, date  , id}) {
+
+  const navigation = useNavigation();
+
+  function onPressHandler(){
+    navigation.navigate("NotesManagementScreen" , {noteId : id})
+  }
+
   return (
     <View style={styles.cardContainer}>
-      <Pressable style={styles.card} onPress = {onPress}>
+      <Pressable style={styles.card} onPress = {onPressHandler}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.date}>{date}</Text>
         <View style = {styles.descriptionContainer}>

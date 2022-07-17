@@ -29,29 +29,19 @@ export default function Notes({navigation}) {
   function navigateToManageNotes(){
     navigation.navigate("NotesManagementScreen")
   }
-  
-  const newNote = {
-    title : "added",
-    description : "newAdded",
-    date : "2022-07013"
-  }
-
-  function newNoteAdd(newNote){
-    authCntxt.addNotes(newNote)
-  }
 
   return (
     <>
       <IconButton
         name="plus"
         color={colors.black}
-        onPress={newNoteAdd.bind(this , newNote)}
+        onPress={navigateToManageNotes}
         size={36}
         pepperStyle={styles.addNoteButton}
       />
 
       <ImageBackground
-        source={require("../assets/notesbanner.png")}
+        source={require("../assets/notes.png")}
         resizeMode="cover"
         style={[styles.rootContainer]}
       >
@@ -70,7 +60,7 @@ export default function Notes({navigation}) {
                 title={itemData.item.title}
                 description={itemData.item.description}
                 date = {itemData.item.date}
-                onPress = {navigateToManageNotes}
+                id = {itemData.item.id}
               />
             );
           }}

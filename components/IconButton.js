@@ -13,7 +13,6 @@ export default function IconButton({
   animationProp,
 }) {
   
-
   function IconButtonPressed() {
     //Button Operation
     onPress();
