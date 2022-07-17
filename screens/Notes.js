@@ -12,20 +12,40 @@ import { colors } from "../constant/colors";
 import { useHeaderHeight } from "@react-navigation/elements";
 import Heading from "../components/Heading";
 import Progressbar from "../components/Progressbar";
-import { notes } from "../data/notes";
+import { useColorScheme } from "react-native-web";
+import { useContext } from "react";
+import { AuthContext } from "../constant/appcontext";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const displayHeight = Dimensions.get("screen").height;
 
-export default function Notes() {
+export default function Notes({navigation}) {
   const percent = (50 / 100) * (windowWidth - 100);
+
+  const authCntxt = useContext(AuthContext)
+  const notes = authCntxt.notes;
+
+  function navigateToManageNotes(){
+    navigation.navigate("NotesManagementScreen")
+  }
+  
+  const newNote = {
+    title : "added",
+    description : "newAdded",
+    date : "2022-07013"
+  }
+
+  function newNoteAdd(newNote){
+    authCntxt.addNotes(newNote)
+  }
+
   return (
     <>
       <IconButton
         name="plus"
         color={colors.black}
-        onPress={() => {}}
+        onPress={newNoteAdd.bind(this , newNote)}
         size={36}
         pepperStyle={styles.addNoteButton}
       />
@@ -50,6 +70,7 @@ export default function Notes() {
                 title={itemData.item.title}
                 description={itemData.item.description}
                 date = {itemData.item.date}
+                onPress = {navigateToManageNotes}
               />
             );
           }}

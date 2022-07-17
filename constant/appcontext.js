@@ -1,18 +1,23 @@
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createContext ,useState , useEffect} from "react";
+import { createContext, useState, useEffect } from "react";
 import { Alert } from "react-native";
 
 export const AuthContext = createContext({
   setAuthUsername: () => {},
   isAuth: false,
   username: "",
-  logOutUser:()=>{}
+  logOutUser: () => {},
+  notes: [],
+  addNotes: () => {},
+  updateNotes: () => {},
+  deleteNotes: () => {},
 });
 
 function AuthContextProvider({ children }) {
   const [username, setUsername] = useState();
   const [isAuth, setIsAuth] = useState(false);
+  const [notes, setNotes] = useState([]);
 
   useEffect(() => {
     async function fetchUsername() {
@@ -31,23 +36,41 @@ function AuthContextProvider({ children }) {
     try {
       AsyncStorage.setItem("username", username);
       setIsAuth(true);
-      setUsername(username)
+      setUsername(username);
     } catch (error) {
-        Alert.alert("Some problem occured")
+      Alert.alert("Some problem occured");
     }
   }
 
-  function logOutUser(){
-    AsyncStorage.removeItem('username');
+  function logOutUser() {
+    AsyncStorage.removeItem("username");
     setIsAuth(false);
-    setUsername('')
+    setUsername("");
   }
+
+  function addNotes(note) {
+    const id = new Date().toString() + Math.random().toString();
+    const newNote = {
+      id: id,
+      title: note.title,
+      description: note.description,
+      date:note.date
+    };
+    setNotes((prevNotes) => [newNote , ...prevNotes])
+    // console.log(newNote);
+  }
+  function deleteNotes() {}
+  function updateNotes() {}
 
   const value = {
     username: username,
     isAuth: isAuth,
     setAuthUsername: setAuthUsername,
-    logOutUser:logOutUser
+    logOutUser: logOutUser,
+    notes: notes,
+    addNotes: addNotes,
+    updateNotes: updateNotes,
+    deleteNotes: deleteNotes,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -10,6 +10,7 @@ import Home from "./screens/Home";
 import Tasks from "./screens/Tasks";
 import Task from "./screens/Task";
 import Notes from "./screens/Notes";
+import ManageNotes from "./screens/ManageNotes";
 import Developer from "./screens/Developer";
 import AuthScreen from "./screens/AuthScreen";
 
@@ -32,6 +33,14 @@ function TasksScreen() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="TasksForm" component={Task} />
       <Stack.Screen name="TasksList" component={Tasks} />
+    </Stack.Navigator>
+  );
+}
+function NotesScreen() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="AllNotesScreen" component={Notes} />
+      <Stack.Screen name="NotesManagementScreen" component={ManageNotes} />
     </Stack.Navigator>
   );
 }
@@ -73,7 +82,7 @@ function LaunchScreen() {
       />
       <Drawer.Screen
         name="Notes"
-        component={Notes}
+        component={NotesScreen}
         options={{
           drawerIcon: ({ color }) => {
             return <Ionicons name="albums-outline" size={24} color={color} />;

@@ -5,10 +5,10 @@ import Title from "./Title";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-export default function NoteCard({ title, description, date }) {
+export default function NoteCard({ title, description, date , onPress}) {
   return (
     <View style={styles.cardContainer}>
-      <Pressable style={styles.card}>
+      <Pressable style={styles.card} onPress = {onPress}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.date}>{date}</Text>
         <View style = {styles.descriptionContainer}>
