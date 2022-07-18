@@ -55,6 +55,11 @@ export default function ManageNotes({ route, navigation }) {
     }
   }
 
+  function onDeleteHandler(){
+    authCntxt.deleteNotes(id)
+    navigation.goBack()
+  }
+
   return (
     <ImageBackground
       source={require("../assets/notesbanner.png")}
@@ -65,6 +70,8 @@ export default function ManageNotes({ route, navigation }) {
         onSubmitHandler={ValidityCheck}
         inputs={inputs}
         isValidNote={isValidNote}
+        isNote = {isNote}
+        onDeleteHandler = {onDeleteHandler}
       />
     </ImageBackground>
   );

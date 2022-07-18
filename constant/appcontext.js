@@ -58,7 +58,10 @@ function AuthContextProvider({ children }) {
     };
     setNotes((prevNotes) => [newNote , ...prevNotes])
   }
-  function deleteNotes() {}
+  function deleteNotes(id) {
+    const newNotes = notes.filter((note) => note.id !== id)
+    setNotes([...newNotes])
+  }
   function updateNotes(id , {title , description , date}) {
     let updateIndex = -1;
 
