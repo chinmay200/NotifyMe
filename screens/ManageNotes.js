@@ -1,16 +1,7 @@
 import { useContext, useState } from "react";
-import {
-  Button,
-  ImageBackground,
-  StyleSheet,
-  TextInput,
-  Dimensions,
-} from "react-native";
+import { ImageBackground, StyleSheet } from "react-native";
+import NoteForm from "../components/NoteForm";
 import { AuthContext } from "../constant/appcontext";
-import { colors } from "../constant/colors";
-
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
 
 export default function ManageNotes({ route, navigation }) {
   const id = route.params?.noteId;
@@ -24,6 +15,7 @@ export default function ManageNotes({ route, navigation }) {
     description: selectedNote ? selectedNote.description.toString() : "",
     date: selectedNote ? selectedNote.date.toString() : "",
   });
+  const [isValidNote, setIsValidNote] = useState(false);
 
   function setInputHandler(identifier, enteredValue) {
     setInputs((currentValues) => {
@@ -31,10 +23,31 @@ export default function ManageNotes({ route, navigation }) {
     });
   }
 
+  function ValidityCheck() {
+    const data = {
+      title : inputs.title,
+      description : inputs.description,
+      date : new Date(inputs.date),
+    }
+
+    const dateValid = new Date(data.date).toString() !== "Invalid Date";
+    const titleValid = data.title.trim().length > 0;
+    const descriptionValid = data.description.trim().length > 0
+
+
+    if(dateValid && titleValid && descriptionValid){
+      onSubmitHandler()
+      setIsValidNote(true)
+    }
+    else{
+      setIsValidNote(false)
+    }
+  }
+
   function onSubmitHandler() {
     if (isNote) {
-      authCntxt.updateNotes(id , {...inputs});
-      navigation.goBack()
+      authCntxt.updateNotes(id, { ...inputs });
+      navigation.goBack();
     } else {
       const newNote = inputs;
       authCntxt.addNotes(newNote);
@@ -47,22 +60,12 @@ export default function ManageNotes({ route, navigation }) {
       source={require("../assets/notesbanner.png")}
       style={styles.rootContainer}
     >
-      <TextInput
-        style={styles.inputFields}
-        value={inputs.title}
-        onChangeText={setInputHandler.bind(this, "title")}
+      <NoteForm
+        setInputHandler={setInputHandler}
+        onSubmitHandler={ValidityCheck}
+        inputs={inputs}
+        isValidNote={isValidNote}
       />
-      <TextInput
-        style={styles.inputFields}
-        value={inputs.description}
-        onChangeText={setInputHandler.bind(this, "description")}
-      />
-      <TextInput
-        style={styles.inputFields}
-        value={inputs.date}
-        onChangeText={setInputHandler.bind(this, "date")}
-      />
-      <Button title="Submit" onPress={onSubmitHandler} />
     </ImageBackground>
   );
 }
@@ -73,18 +76,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 40,
-  },
-
-  inputFields: {
-    width: windowWidth * 0.8,
-    height: 50,
-    fontSize: 22,
-    padding: 5,
-    paddingLeft: 15,
-    borderRadius: 10,
-    borderColor: colors.yellow,
-    borderWidth: 2,
-    marginBottom: 22,
-    color: colors.white,
   },
 });
