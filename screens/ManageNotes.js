@@ -10,47 +10,21 @@ export default function ManageNotes({ route, navigation }) {
 
   const selectedNote = authCntxt.notes.find((note) => note.id === id);
 
-  const [inputs, setInputs] = useState({
-    title: selectedNote ? selectedNote.title.toString() : "",
-    description: selectedNote ? selectedNote.description.toString() : "",
-    date: selectedNote ? selectedNote.date.toString() : "",
-  });
-  const [isValidNote, setIsValidNote] = useState(false);
-
-  function setInputHandler(identifier, enteredValue) {
-    setInputs((currentValues) => {
-      return { ...currentValues, [identifier]: enteredValue };
-    });
-  }
-
-  function ValidityCheck() {
-    const data = {
-      title : inputs.title,
-      description : inputs.description,
-      date : new Date(inputs.date),
-    }
-
-    const dateValid = new Date(data.date).toString() !== "Invalid Date";
-    const titleValid = data.title.trim().length > 0;
-    const descriptionValid = data.description.trim().length > 0
-
-
-    if(dateValid && titleValid && descriptionValid){
-      onSubmitHandler()
-      setIsValidNote(true)
-    }
-    else{
-      setIsValidNote(false)
-    }
-  }
-
-  function onSubmitHandler() {
+ 
+  function onSubmitHandler(data) {
     if (isNote) {
-      authCntxt.updateNotes(id, { ...inputs });
+      authCntxt.updateNotes(id, { ...data });
       navigation.goBack();
     } else {
-      const newNote = inputs;
-      authCntxt.addNotes(newNote);
+      const newNote = [{
+        title:data.title,
+        description:data.description,
+        date:data.date
+      }];
+      // console.log('====================================');
+      // console.log(newNote);
+      // console.log('====================================');
+      authCntxt.addNotes(newNote[0]);
       navigation.goBack();
     }
   }
@@ -65,13 +39,12 @@ export default function ManageNotes({ route, navigation }) {
       source={require("../assets/notesbanner.png")}
       style={styles.rootContainer}
     >
+
       <NoteForm
-        setInputHandler={setInputHandler}
-        onSubmitHandler={ValidityCheck}
-        inputs={inputs}
-        isValidNote={isValidNote}
-        isNote = {isNote}
+        onSubmitHandler={onSubmitHandler}
+        selectedNote = {selectedNote}
         onDeleteHandler = {onDeleteHandler}
+        isNote ={isNote}
       />
     </ImageBackground>
   );

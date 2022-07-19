@@ -7,20 +7,52 @@ import {
   View,
 } from "react-native";
 import { colors } from "../constant/colors";
+import { useState } from "react";
 
 const windowWidth = Dimensions.get("window").width;
 
 export default function NoteForm({
   onSubmitHandler,
-  setInputHandler,
-  inputs,
-  isValidNote,
-  isNote,
-  onDeleteHandler
+  onDeleteHandler,
+  selectedNote,
+  isNote
 }) {
+
+  const [inputs, setInputs] = useState({
+    title: selectedNote ? selectedNote.title.toString() : "",
+    description: selectedNote ? selectedNote.description.toString() : "",
+    date: selectedNote ? selectedNote.date.toString() : "",
+  });
+
+  function setInputHandler(identifier, enteredValue) {
+    setInputs((currentValues) => {
+      return { ...currentValues, [identifier]: enteredValue };
+    });
+  }
+
+  function ValidityCheck() {
+    const data = {
+      title : inputs.title,
+      description : inputs.description,
+      date : new Date(inputs.date).toISOString().slice(0,10),
+    }
+
+    const dateValid = new Date(data.date).toISOString() !== "Invalid Date";
+    const titleValid = data.title.trim().length > 0;
+    const descriptionValid = data.description.trim().length > 0
+
+    // console.log(dateValid);
+    // console.log(titleValid);
+    // console.log(descriptionValid);
+
+    if(dateValid && titleValid && descriptionValid){
+      onSubmitHandler(data)
+    }
+  }
+
   let buttonContainer = (
     <View style={styles.buttonContainer}>
-      <Button title="Submit" onPress={onSubmitHandler} />
+      <Button title="Submit" onPress={ValidityCheck} />
     </View>
   );
 
@@ -28,16 +60,14 @@ export default function NoteForm({
     buttonContainer = (
       <View style={styles.buttonContainer}>
         <Button title="Delete" onPress={onDeleteHandler} />
-        <Button title="Submit" onPress={onSubmitHandler} />
+        <Button title="Edit" onPress={ValidityCheck} />
       </View>
     );
   }
 
+
   return (
     <>
-      {!isValidNote && (
-        <Text style={styles.warning}>Invalid input please check again!!</Text>
-      )}
       <View>
         <Text style={styles.label}>Title</Text>
         <TextInput
@@ -52,6 +82,7 @@ export default function NoteForm({
           style={styles.inputFields}
           value={inputs.description}
           onChangeText={setInputHandler.bind(this, "description")}
+          multiline={true}
         />
       </View>
       <View>
@@ -71,7 +102,6 @@ export default function NoteForm({
 const styles = StyleSheet.create({
   inputFields: {
     width: windowWidth * 0.8,
-    height: 50,
     fontSize: 22,
     padding: 5,
     paddingLeft: 15,
